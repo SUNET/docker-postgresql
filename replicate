@@ -2,11 +2,15 @@
 
 MASTER_DB=${MASTER_DB}
 REPLICATION_PW=${REPLICATION_PW}
+POSTGRESQL_DATA=/var/lib/postgresql/9.1/main
 
 echo Cleaning up old cluster directory
-sudo -u postgres rm -rf /var/lib/postgresql/9.1/main/
-#ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /var/lib/postgresql/9.1/main/server.crt
-#ln -s /etc/ssl/private/ssl-cert-snakeoil.key /var/lib/postgresql/9.1/main/server.key
+if [ ! -d $POSTGRESQL_DATA ]; then
+    mkdir -p $POSTGRESQL_DATA
+else
+    sudo -u postgres rm -rf /var/lib/postgresql/9.1/main/
+fi
+chown -R postgres:postgres $POSTGRESQL_DATA
 
 echo Starting base backup as replicator
 sudo -u postgres pg_basebackup -h $MASTER_DB -D /var/lib/postgresql/9.1/main -U replicator -v -P
@@ -18,5 +22,8 @@ primary_conninfo = 'host=$MASTER_DB port=5432 user=replicator password=$REPLICAT
 trigger_file = '/tmp/postgresql.trigger'
 _EOF1_
 "
+
+ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /var/lib/postgresql/9.1/main/server.crt
+ln -s /etc/ssl/private/ssl-cert-snakeoil.key /var/lib/postgresql/9.1/main/server.key
 
 echo Starting PostgreSQL
