@@ -1,0 +1,22 @@
+#!/bin/bash
+
+MASTER_DB=${MASTER_DB}
+REPLICATION_PW=${REPLICATION_PW}
+
+echo Cleaning up old cluster directory
+sudo -u postgres rm -rf /var/lib/postgresql/9.1/main/
+#ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /var/lib/postgresql/9.1/main/server.crt
+#ln -s /etc/ssl/private/ssl-cert-snakeoil.key /var/lib/postgresql/9.1/main/server.key
+
+echo Starting base backup as replicator
+sudo -u postgres pg_basebackup -h $MASTER_DB -D /var/lib/postgresql/9.1/main -U replicator -v -P
+
+echo Writing recovery.conf file
+sudo -u postgres bash -c "cat > /var/lib/postgresql/9.1/main/recovery.conf <<- _EOF1_
+standby_mode = 'on'
+primary_conninfo = 'host=$MASTER_DB port=5432 user=replicator password=$REPLICATION_PW sslmode=require'
+trigger_file = '/tmp/postgresql.trigger'
+_EOF1_
+"
+
+echo Starting PostgreSQL

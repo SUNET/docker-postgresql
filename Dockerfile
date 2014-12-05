@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER Ben Firshman "ben@orchardup.com"
 
 RUN locale-gen en_US.UTF-8
@@ -11,7 +11,9 @@ RUN mkdir /etc/ssl/private-copy; mv /etc/ssl/private/* /etc/ssl/private-copy/; r
 ADD postgresql.conf /etc/postgresql/9.1/main/postgresql.conf
 ADD pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
 ADD run /usr/local/bin/run
+ADD replicate /usr/local/bin/replicate
 RUN chmod +x /usr/local/bin/run
+RUN chmod +x /usr/local/bin/replicate
 
 VOLUME ["/var/lib/postgresql"]
 EXPOSE 5432
