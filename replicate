@@ -7,10 +7,13 @@ POSTGRESQL_DATA=/var/lib/postgresql/9.1/main
 echo Cleaning up old cluster directory
 if [ ! -d $POSTGRESQL_DATA ]; then
     mkdir -p $POSTGRESQL_DATA
+    chown -R postgres:postgres $POSTGRESQL_DATA
+    chmod 700 $POSTGRESQL_DATA
 else
-    sudo -u postgres rm -rf /var/lib/postgresql/9.1/main/
+    chown -R postgres:postgres $POSTGRESQL_DATA
+    chmod 700 $POSTGRESQL_DATA
+    sudo -u postgres rm -rf /var/lib/postgresql/9.1/main/*
 fi
-chown -R postgres:postgres $POSTGRESQL_DATA
 
 echo Starting base backup as replicator
 sudo -u postgres pg_basebackup -h $MASTER_DB -D /var/lib/postgresql/9.1/main -U replicator -v -P
@@ -23,7 +26,8 @@ trigger_file = '/tmp/postgresql.trigger'
 _EOF1_
 "
 
-ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /var/lib/postgresql/9.1/main/server.crt
-ln -s /etc/ssl/private/ssl-cert-snakeoil.key /var/lib/postgresql/9.1/main/server.key
+sudo -u postgres ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /var/lib/postgresql/9.1/main/server.crt
+sudo -u postgres ln -s /etc/ssl/private/ssl-cert-snakeoil.key /var/lib/postgresql/9.1/main/server.key
 
 echo Starting PostgreSQL
+/usr/local/bin/run
