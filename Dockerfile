@@ -16,7 +16,7 @@ RUN chown postgres:postgres /etc/postgresql/9.3/main/*.conf
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
-VOLUME ["/var/lib/postgresql"]
+VOLUME ["/var/log/postgresql", "/var/lib/postgresql"]
 EXPOSE 5432
 CMD ["/usr/local/bin/run"]
 
