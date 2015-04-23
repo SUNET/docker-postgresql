@@ -14,6 +14,8 @@ ADD postgresql.conf /etc/postgresql/9.3/main/postgresql.conf
 ADD pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
+ADD backup /usr/local/bin/backup
+RUN chmod +x /usr/local/bin/backup
 
 VOLUME ["/var/log/postgresql", "/var/lib/postgresql"]
 EXPOSE 5432
