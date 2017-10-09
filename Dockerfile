@@ -48,7 +48,6 @@ RUN set -ex; \
 	apt-key list
 
 ENV PG_MAJOR 9.6
-ENV PG_VERSION 9.6.5-1.pgdg90+1
 
 RUN set -ex; \
 	\
@@ -73,12 +72,12 @@ RUN set -ex; \
 			apt-get update; \
 			apt-get build-dep -y \
 				postgresql-common pgdg-keyring \
-				"postgresql-$PG_MAJOR=$PG_VERSION" \
+				"postgresql-$PG_MAJOR" \
 			; \
 			DEB_BUILD_OPTIONS="nocheck parallel=$(nproc)" \
 				apt-get source --compile \
 					postgresql-common pgdg-keyring \
-					"postgresql-$PG_MAJOR=$PG_VERSION" \
+					"postgresql-$PG_MAJOR" \
 			; \
 # we don't remove APT lists here because they get re-downloaded and removed later
 			\
@@ -103,8 +102,8 @@ RUN set -ex; \
 	apt-get install -y postgresql-common; \
 	sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf; \
 	apt-get install -y \
-		"postgresql-$PG_MAJOR=$PG_VERSION" \
-		"postgresql-contrib-$PG_MAJOR=$PG_VERSION" \
+		"postgresql-$PG_MAJOR" \
+		"postgresql-contrib-$PG_MAJOR" \
 	; \
 	\
 	rm -rf /var/lib/apt/lists/*; \
