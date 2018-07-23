@@ -1,0 +1,6 @@
+docker_name: "library/postgres-${GIT_LOCAL_BRANCH}"
+git:
+  branch: "9.6"
+  extensions:
+    checkout_local_branch: true
+clean_workspace: true
