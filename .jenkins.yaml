@@ -3,4 +3,6 @@ git:
   branch: "9.6"
   extensions:
     checkout_local_branch: true
+triggers:
+  cron: "@weekly"
 clean_workspace: true
