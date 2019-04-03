@@ -1,8 +1,8 @@
 docker_name: "library/postgres-${GIT_LOCAL_BRANCH}"
 git:
   branches:
-    - 9.6
-    - 11
+    - "9.6"
+    - "11"
   extensions:
     checkout_local_branch: true
 triggers:
