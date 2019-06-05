@@ -1,7 +1,7 @@
 docker-postgresql
 =================
 
-Adapted from https://github.com/docker-library/postgres/.
+Adapted from the image found at https://github.com/docker-library/postgres/.
 
 Should work as the [official Postgres image](https://registry.hub.docker.com/_/postgres/).
 
