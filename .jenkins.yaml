@@ -3,7 +3,7 @@ git:
   branches:
     - "9.6"
     - "11"
-    - "17"
+    - "17.5"
   extensions:
     checkout_local_branch: true
 triggers:
